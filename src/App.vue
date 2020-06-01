@@ -1,60 +1,53 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="Home Page Logo"
           class="shrink mr-2"
           contain
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
           transition="scale-transition"
           width="40"
         />
-
-        <v-img
-          alt="Vuetify Name"
+        <a
+          alt="Home Page Link"
           class="shrink mt-1 hidden-sm-and-down"
           contain
           min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          src="/"
           width="100"
-        />
+        >
+          <span class="mr-2">Home</span>
+        </a>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
+      <v-btn href="https://github.com/Treee/aoe-statistics-ui" target="_blank" text>
+        <span class="mr-2">Github Source</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <PlayerStatisticsTable />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import PlayerStatisticsTable from "./components/PlayerStatisticsTable";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    HelloWorld,
+    PlayerStatisticsTable
   },
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>
