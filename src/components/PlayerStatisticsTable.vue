@@ -9,31 +9,74 @@
     class="elevation-1"
   >
     <template v-slot:top>
-      <v-switch v-model="singleSelect" label="Single Select" class="pa-3"></v-switch>
+      <!-- <v-toolbar flat short> -->
+      <v-row align="center">
+        <v-chip class="ml-5">Player Statistics</v-chip>
+        <v-switch v-model="singleSelect" label="Single Select" class="ml-5"></v-switch>
+        <v-btn color="primary" class="ml-5" dark @click.stop="newPlayerDialog = true">Add Player</v-btn>
+
+        <v-dialog v-model="newPlayerDialog" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Add New Player</v-card-title>
+            <v-card-text>
+              <v-text-field v-model="newPlayerName" label="Player Name" hint="Player1" required></v-text-field>
+              <v-overflow-btn
+                class="my-2"
+                :items="teams"
+                label="Teams"
+                editable
+                item-value="text"
+                v-model="playerTeam"
+                required
+              ></v-overflow-btn>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" text @click="newPlayerDialog = false">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="addPlayer()">Agree</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-btn color="primary" class="ml-5" dark @click.stop="newTeamDialog = true">Add Team</v-btn>
+
+        <v-dialog v-model="newTeamDialog" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Add New Team</v-card-title>
+            <v-card-text>
+              <v-text-field v-model="newTeamName" label="Team Name" hint="Team Name" required></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" text @click="newTeamDialog = false">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="addNewTeam">Agree</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
     </template>
   </v-data-table>
 </template>
-
 <script>
+import Api from "../api/api";
+
 export default {
   name: "PlayerStatisticsTable",
-
   components: {},
 
   data: () => ({
+    newPlayerDialog: false,
+    newTeamDialog: false,
+    teams: [],
+    newPlayerName: "",
+    playerTeam: "",
+    newTeamName: "",
     selected: [],
     headers: [
       { text: "Name", sortable: true, value: "name" },
       { text: "Team", sortable: true, value: "team" }
     ],
-    players: [
-      { name: "P1", team: "Team1" },
-      { name: "P1", team: "Some Other Team" },
-      { name: "P2", team: "Team1" },
-      { name: "P3", team: "Team2" },
-      { name: "P4", team: "Team2" },
-      { name: "P5", team: "Team3" }
-    ],
+    players: [],
     singleSelect: false
   }),
   computed: {
@@ -42,6 +85,36 @@ export default {
         id: `${item.name}-${item.team}`,
         ...item
       }));
+    }
+  },
+  created() {
+    const api = new Api();
+    return api.getPlayersData().then(results => {
+      console.log("data", results);
+      this.players = results.map(item => ({
+        id: `${item.name}-${item.team}`,
+        ...item
+      }));
+    });
+  },
+  methods: {
+    addPlayer() {
+      const playerExists = this.players.find(player => {
+        return (
+          player.name === this.newPlayerName && player.team === this.playerTeam
+        );
+      });
+      if (!playerExists) {
+        this.players.push({ name: this.newPlayerName, team: this.playerTeam });
+      }
+      this.newPlayerDialog = false;
+    },
+    addNewTeam() {
+      console.log("clicked", this.newTeamName);
+      if (!this.teams.includes(this.newTeamName)) {
+        this.teams.push(this.newTeamName);
+      }
+      this.newTeamDialog = false;
     }
   }
 };

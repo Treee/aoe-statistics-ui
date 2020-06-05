@@ -1,6 +1,13 @@
 export default class Api {
+    constructor() { }
+
     async getPlayersData() {
-        const data = await fetch("");
-        return data.json();
+        return await fetch("http://localhost:3000/api/players").then(response => {
+            console.log('response', response);
+            return response.json()
+        }).then(data => {
+            console.log('data', data);
+            return data;
+        });
     }
 }
