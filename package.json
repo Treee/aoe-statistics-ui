@@ -25,6 +25,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "geckodriver": "^1.19.1",
     "gh-pages": "^3.0.0",
+    "node-sass": "^4.14.1",
     "sass": "^1.26.7",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-vuetify": "~2.0.5",
