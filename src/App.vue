@@ -6,11 +6,12 @@
         <v-tab to="/teams">Teams</v-tab>
       </v-tabs>
     </v-app-bar>
-    <main>
+    <v-main>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
-    </main>
+    </v-main>
+    <v-footer app>Test footer</v-footer>
   </v-app>
 </template>
 
@@ -21,6 +22,10 @@ export default {
 </script>
 
 <style lang="scss">
+html {
+  overflow-y: auto;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

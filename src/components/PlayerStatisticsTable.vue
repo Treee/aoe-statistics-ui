@@ -3,7 +3,6 @@
     v-model="selected"
     :headers="headers"
     :items="mappedPlayers"
-    :single-select="singleSelect"
     :single-expand="false"
     item-key="id"
     show-select
@@ -14,7 +13,6 @@
       <!-- <v-toolbar flat short> -->
       <v-row align="center">
         <v-chip class="ml-5">Player Statistics</v-chip>
-        <v-switch v-model="singleSelect" label="Single Select" class="ml-5"></v-switch>
         <v-btn color="primary" class="ml-5" dark @click.stop="newPlayerDialog = true">Add Player</v-btn>
         <v-dialog v-model="newPlayerDialog" max-width="290">
           <v-card>
@@ -83,8 +81,7 @@ export default {
       { text: "Name", sortable: true, value: "name" },
       { text: "Team", sortable: true, value: "team" }
     ],
-    players: [],
-    singleSelect: false
+    players: []
   }),
   computed: {
     mappedPlayers() {
