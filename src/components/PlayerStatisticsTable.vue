@@ -4,8 +4,10 @@
     :headers="headers"
     :items="mappedPlayers"
     :single-select="singleSelect"
+    :single-expand="false"
     item-key="id"
     show-select
+    show-expand
     class="elevation-1"
   >
     <template v-slot:top>
@@ -56,6 +58,9 @@
           </v-card>
         </v-dialog>
       </v-row>
+    </template>
+    <template v-slot:expanded-item="{ headers, item }">
+      <td :colspan="headers.length">More info about {{ item.name }}</td>
     </template>
   </v-data-table>
 </template>
