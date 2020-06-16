@@ -92,18 +92,10 @@ export default {
     }
   },
   created() {
-    const api = new Api();
-    return api.getPlayersData().then(results => {
-      console.log("data", results);
-      this.players = results.map(item => ({
-        id: `${item.name}-${item.team}`,
-        ...item
-      }));
-
-      this.teams = results.map(item => {
-        return item.team;
-      });
+    this.$store.getters["players/getPlayers"].then(result => {
+      this.players = result;
     });
+    this.teams = this.$store.getters["players/getTeams"];
   },
   methods: {
     async addPlayer() {
