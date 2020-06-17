@@ -4,6 +4,7 @@
       <v-tabs fixed-tabs>
         <v-tab to="/players">Players</v-tab>
         <v-tab to="/teams">Teams</v-tab>
+        <v-tab to="/tournaments">Tournaments</v-tab>
       </v-tabs>
     </v-app-bar>
     <v-main>
