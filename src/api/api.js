@@ -2,7 +2,7 @@ export default class Api {
     constructor() { }
 
     async getPlayersData() {
-        return await fetch("http://localhost:3000/api/players").then(response => {
+        return await fetch("https://itsatreee.com/aoe2/api/players").then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
@@ -16,11 +16,10 @@ export default class Api {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ name: name, team: team })
         }
-        return await fetch("http://localhost:3000/api/player", options).then(response => {
+        return await fetch("http://itsatreee.com/aoe2/api/player", options).then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
@@ -30,7 +29,7 @@ export default class Api {
     }
 
     async getTournaments() {
-        return await fetch("http://localhost:3000/api/tournaments").then(response => {
+        return await fetch("http://itsatreee.com/aoe2/api/tournaments").then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
