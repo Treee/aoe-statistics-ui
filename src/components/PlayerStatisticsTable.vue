@@ -58,7 +58,10 @@
       </v-row>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length">More info about {{ item.name }}</td>
+      <td :colspan="headers.length">
+        More info about {{ item.name }}
+        <v-icon @click.prevent="clickDelete(item._id)">mdi-delete-forever-outline</v-icon>
+      </td>
     </template>
   </v-data-table>
 </template>
@@ -79,27 +82,27 @@ export default {
     selected: [],
     headers: [
       { text: "Name", sortable: true, value: "name" },
-      { text: "Team", sortable: true, value: "team" }
+      { text: "Team", sortable: true, value: "team" },
     ],
-    players: []
+    players: [],
   }),
   computed: {
     mappedPlayers() {
-      return this.players.map(item => ({
+      return this.players.map((item) => ({
         id: `${item.name}-${item.team}`,
-        ...item
+        ...item,
       }));
-    }
+    },
   },
   created() {
-    this.$store.getters["players/getPlayers"].then(result => {
+    this.$store.getters["players/getPlayers"].then((result) => {
       this.players = result;
     });
     this.teams = this.$store.getters["players/getTeams"];
   },
   methods: {
     async addPlayer() {
-      const playerExists = this.players.find(player => {
+      const playerExists = this.players.find((player) => {
         return (
           player.name === this.newPlayerName && player.team === this.playerTeam
         );
@@ -109,9 +112,8 @@ export default {
         await api.addNewPlayer(this.newPlayerName, this.playerTeam).then(() => {
           this.players.push({
             name: this.newPlayerName,
-            team: this.playerTeam
+            team: this.playerTeam,
           });
-          console.log("response");
         });
       }
       this.newPlayerDialog = false;
@@ -122,8 +124,12 @@ export default {
         this.teams.push(this.newTeamName);
       }
       this.newTeamDialog = false;
-    }
-  }
+    },
+    clickDelete(playerId) {
+      console.log("delete this record");
+      this.$store.dispatch("players/deletePlayer", playerId);
+    },
+  },
 };
 </script>
 

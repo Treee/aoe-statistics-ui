@@ -29,10 +29,21 @@ const getters = {
 
 const mutators = {
     // mutators
+    deletePlayer(state, playerId) {
+        state.players = state.players.filter((player) => {
+            return player._id !== playerId;
+        });
+    }
 };
 
 const actions = {
     // actions
+    async deletePlayer({ commit }, playerId) {
+        console.log('store stuff. playerid', playerId);
+        await api.deletePlayer(playerId).then(() => {
+            commit('deletePlayer', playerId);
+        });
+    },
 };
 
 export default {

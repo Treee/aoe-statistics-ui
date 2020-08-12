@@ -1,8 +1,29 @@
 export default class Api {
+    hostname = 'https://itsatreee.com/aoe2/';
+    // hostname = 'http://localhost:3000';
     constructor() { }
 
     async getPlayersData() {
-        return await fetch("https://itsatreee.com/aoe2/api/players").then(response => {
+        const options = {
+            method: "GET",
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        };
+        return await fetch(`${this.hostname}/api/players`, options).then(response => {
+            console.log('response', response);
+            return response.json();
+        }).then(data => {
+            console.log('data', data);
+            return data;
+        });
+    }
+
+    async deletePlayer(playerId) {
+        const options = {
+            method: "DELETE"
+        }
+        return await fetch(`${this.hostname}/api/player/${playerId}`, options).then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
@@ -15,11 +36,11 @@ export default class Api {
         const options = {
             method: "POST",
             headers: {
-                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: name, team: team })
+            body: JSON.stringify({ name, team })
         }
-        return await fetch("http://itsatreee.com/aoe2/api/player", options).then(response => {
+        return await fetch(`${this.hostname}/api/player`, options).then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
@@ -29,7 +50,7 @@ export default class Api {
     }
 
     async getTournaments() {
-        return await fetch("http://itsatreee.com/aoe2/api/tournaments").then(response => {
+        return await fetch(`${this.hostname}/api/tournaments`).then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
