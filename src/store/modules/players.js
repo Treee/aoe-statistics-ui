@@ -1,14 +1,14 @@
 import Api from "../../api/api";
-let api = new Api();
+const api = new Api();
 const state = {
     // state structure
     players: [],
-    teams: []
+    teams: [],
+    tournaments: []
 };
 
 const getters = {
     async getPlayers(state) {
-        console.log('store stuff');
         return api.getPlayersData().then(results => {
             console.log("data", results);
             state.players = results.map(item => ({
@@ -16,6 +16,12 @@ const getters = {
                 ...item
             }));
             return state.players;
+        });
+    },
+    async getTournaments(state) {
+        return api.getTournaments().then((results) => {
+            console.log("data", results);
+            state.tournaments = results;
         });
     },
     getTeams(state) {
@@ -28,24 +34,41 @@ const getters = {
 const mutations = {
     // mutators
     deletePlayer(state, playerId) {
-        console.log(state.players);
         state.players = state.players.filter((player) => {
-            console.log(`Pid: ${playerId} - Oid: ${player._id} - Eq?: ${player._id !== playerId}`);
             return player._id !== playerId.toString();
         });
-        console.log(state.players);
+    },
+    addPlayer(state, playerInfo) {
+        state.players.push({
+            name: playerInfo.name,
+            team: playerInfo.team,
+            _id: playerInfo._id,
+            id: `${playerInfo.name}-${playerInfo.team}`
+        });
     }
 };
 
 const actions = {
     // actions
     async deletePlayer({ commit, state }, playerId) {
-        console.log('store stuff. playerid', playerId);
         await api.deletePlayer(playerId).then(() => {
             commit('deletePlayer', playerId);
         });
         return state.players;
     },
+    async addPlayer({ commit, state }, playerInfo) {
+        const playerExists = state.players.find((player) => {
+            return (
+                player.name === playerInfo.name && player.team === playerInfo.team
+            );
+        });
+        if (!playerExists) {
+            await api.addNewPlayer(playerInfo.name, playerInfo.team).then((newPlayer) => {
+                commit('addPlayer', newPlayer);
+            });
+        }
+        return state.players;
+    }
 };
 
 export default {

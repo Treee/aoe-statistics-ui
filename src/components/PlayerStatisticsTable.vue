@@ -51,7 +51,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="red darken-1" text @click="newPlayerDialog = false">Cancel</v-btn>
-              <v-btn color="green darken-1" text @click="addPlayer()">Agree</v-btn>
+              <v-btn color="green darken-1" text @click="addPlayer(newPlayerName, playerTeam)">Agree</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -66,8 +66,6 @@
   </v-data-table>
 </template>
 <script>
-import Api from "../api/api";
-
 export default {
   name: "PlayerStatisticsTable",
   components: {},
@@ -101,35 +99,25 @@ export default {
     });
   },
   methods: {
-    async addPlayer() {
-      const playerExists = this.players.find((player) => {
-        return (
-          player.name === this.newPlayerName && player.team === this.playerTeam
-        );
-      });
-      if (!playerExists) {
-        const api = new Api();
-        await api
-          .addNewPlayer(this.newPlayerName, this.playerTeam)
-          .then((newPlayer) => {
-            this.players.push({
-              name: newPlayer.name,
-              team: newPlayer.team,
-              _id: newPlayer._id,
-            });
-          });
-      }
+    async addPlayer(player, team) {
+      this.$store
+        .dispatch("players/addPlayer", {
+          name: player,
+          team: team,
+        })
+        .then((results) => {
+          this.players = results;
+          this.teams = this.$store.getters["players/getTeams"];
+        });
       this.newPlayerDialog = false;
     },
     addNewTeam() {
-      console.log("clicked", this.newTeamName);
       if (!this.teams.includes(this.newTeamName)) {
         this.teams.push(this.newTeamName);
       }
       this.newTeamDialog = false;
     },
     clickDelete(playerId) {
-      console.log("delete this record", playerId);
       this.$store.dispatch("players/deletePlayer", playerId).then((result) => {
         this.players = result;
       });
