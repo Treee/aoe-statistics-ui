@@ -1,16 +1,13 @@
 export default class Api {
-    hostname = 'https://itsatreee.com/aoe2/';
-    // hostname = 'http://localhost:3000';
+    // hostname = 'https://itsatreee.com/aoe2';
+    hostname = 'http://localhost:3000';
+
+    playerRoute = 'api/players';
+
     constructor() { }
 
     async getPlayersData() {
-        const options = {
-            method: "GET",
-            headers: {
-                "Access-Control-Allow-Origin": "*"
-            }
-        };
-        return await fetch(`${this.hostname}/api/players`, options).then(response => {
+        return await fetch(`${this.hostname}/${this.playerRoute}/all`).then(response => {
             console.log('response', response);
             return response.json();
         }).then(data => {
@@ -21,15 +18,20 @@ export default class Api {
 
     async deletePlayer(playerId) {
         const options = {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ playerId })
         }
-        return await fetch(`${this.hostname}/api/player/${playerId}`, options).then(response => {
+        return await fetch(`${this.hostname}/${this.playerRoute}/${playerId}`, options).then(response => {
+            // return await fetch(`${this.hostname}/${this.playerRoute}/delete`, options).then(response => {
             console.log('response', response);
             return response.json()
-        }).then(data => {
+        }, this.errorHandler).then(data => {
             console.log('data', data);
             return data;
-        });
+        }, this.errorHandler);
     }
 
     async addNewPlayer(name, team) {
@@ -40,12 +42,12 @@ export default class Api {
             },
             body: JSON.stringify({ name, team })
         }
-        return await fetch(`${this.hostname}/api/player`, options).then(response => {
+        return await fetch(`${this.hostname}/${this.playerRoute}/new`, options).then(response => {
             console.log('response', response);
             return response.json()
-        }).then(data => {
-            console.log('data', data);
-            return data;
+        }).then(newPlayer => {
+            console.log('newPlayer', newPlayer);
+            return newPlayer;
         });
     }
 
@@ -57,5 +59,9 @@ export default class Api {
             console.log('data', data);
             return data;
         });
+    }
+
+    errorHandler(error) {
+        console.log(`api error`, error);
     }
 }

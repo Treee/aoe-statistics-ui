@@ -97,8 +97,8 @@ export default {
   created() {
     this.$store.getters["players/getPlayers"].then((result) => {
       this.players = result;
+      this.teams = this.$store.getters["players/getTeams"];
     });
-    this.teams = this.$store.getters["players/getTeams"];
   },
   methods: {
     async addPlayer() {
@@ -109,12 +109,15 @@ export default {
       });
       if (!playerExists) {
         const api = new Api();
-        await api.addNewPlayer(this.newPlayerName, this.playerTeam).then(() => {
-          this.players.push({
-            name: this.newPlayerName,
-            team: this.playerTeam,
+        await api
+          .addNewPlayer(this.newPlayerName, this.playerTeam)
+          .then((newPlayer) => {
+            this.players.push({
+              name: newPlayer.name,
+              team: newPlayer.team,
+              _id: newPlayer._id,
+            });
           });
-        });
       }
       this.newPlayerDialog = false;
     },
@@ -126,8 +129,11 @@ export default {
       this.newTeamDialog = false;
     },
     clickDelete(playerId) {
-      console.log("delete this record");
-      this.$store.dispatch("players/deletePlayer", playerId);
+      console.log("delete this record", playerId);
+      this.$store.dispatch("players/deletePlayer", playerId).then((result) => {
+        this.players = result;
+      });
+      this.teams = this.$store.getters["players/getTeams"];
     },
   },
 };

@@ -15,34 +15,36 @@ const getters = {
                 id: `${item.name}-${item.team}`,
                 ...item
             }));
-
-            state.teams = results.map(item => {
-                return item.team;
-            });
             return state.players;
         });
     },
     getTeams(state) {
-        return state.teams;
+        return state.players.map(item => {
+            return item.team;
+        });
     }
 };
 
-const mutators = {
+const mutations = {
     // mutators
     deletePlayer(state, playerId) {
+        console.log(state.players);
         state.players = state.players.filter((player) => {
-            return player._id !== playerId;
+            console.log(`Pid: ${playerId} - Oid: ${player._id} - Eq?: ${player._id !== playerId}`);
+            return player._id !== playerId.toString();
         });
+        console.log(state.players);
     }
 };
 
 const actions = {
     // actions
-    async deletePlayer({ commit }, playerId) {
+    async deletePlayer({ commit, state }, playerId) {
         console.log('store stuff. playerid', playerId);
         await api.deletePlayer(playerId).then(() => {
             commit('deletePlayer', playerId);
         });
+        return state.players;
     },
 };
 
@@ -50,6 +52,6 @@ export default {
     namespaced: true,
     state,
     getters,
-    mutators,
+    mutations,
     actions,
 };
