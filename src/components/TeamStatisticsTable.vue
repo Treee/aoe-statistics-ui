@@ -2,7 +2,7 @@
   <v-data-table
     v-model="selected"
     :headers="headers"
-    :items="teams"
+    :items="computedTeams"
     :single-select="singleSelect"
     :single-expand="false"
     show-select
@@ -16,13 +16,11 @@
       </v-row>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length">More info about {{ item.team }}</td>
+      <td :colspan="headers.length">More info about {{ item.name }}</td>
     </template>
   </v-data-table>
 </template>
 <script>
-import Api from "../api/api";
-
 export default {
   name: "TeamStatisticsTable",
   components: {},
@@ -30,21 +28,31 @@ export default {
   data: () => ({
     teams: [],
     selected: [],
-    headers: [{ text: "Team", sortable: true, value: "team" }],
-    singleSelect: false
+    headers: [{ text: "Team", sortable: true, value: "name" }],
+    singleSelect: false,
   }),
-  computed: {},
+  computed: {
+    computedTeams() {
+      const uniqueTeamNames = [];
+      const uniqueTeams = [];
+      this.teams.forEach((item) => {
+        if (!uniqueTeamNames.includes(item)) {
+          uniqueTeamNames.push(item);
+          uniqueTeams.push({
+            name: item,
+            ...item,
+          });
+        }
+      });
+      return uniqueTeams;
+    },
+  },
   created() {
-    const api = new Api();
-    return api.getPlayersData().then(results => {
-      console.log("data", results);
-      this.teams = results.map(item => ({
-        id: `${item.team}`,
-        ...item
-      }));
+    this.$store.getters["players/getPlayers"].then(() => {
+      this.teams = this.$store.getters["players/getTeams"];
     });
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

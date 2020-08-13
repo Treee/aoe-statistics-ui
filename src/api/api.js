@@ -1,8 +1,9 @@
 export default class Api {
-    // hostname = 'https://itsatreee.com/aoe2';
-    hostname = 'http://localhost:3000';
+    hostname = 'https://itsatreee.com/aoe2';
+    // hostname = 'http://localhost:3000';
 
     playerRoute = 'api/players';
+    tournamentRoute = 'api/tournaments';
 
     constructor() { }
 
@@ -25,7 +26,6 @@ export default class Api {
             body: JSON.stringify({ playerId })
         }
         return await fetch(`${this.hostname}/${this.playerRoute}/${playerId}`, options).then(response => {
-            // return await fetch(`${this.hostname}/${this.playerRoute}/delete`, options).then(response => {
             console.log('response', response);
             return response.json()
         }, this.errorHandler).then(data => {
@@ -52,7 +52,7 @@ export default class Api {
     }
 
     async getTournaments() {
-        return await fetch(`${this.hostname}/api/tournaments`).then(response => {
+        return await fetch(`${this.hostname}/${this.tournamentRoute}/all`).then(response => {
             console.log('response', response);
             return response.json()
         }).then(data => {
