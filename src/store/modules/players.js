@@ -4,13 +4,14 @@ const state = {
     // state structure
     players: [],
     teams: [],
-    tournaments: []
+    tournaments: [],
+    maps: []
 };
 
 const getters = {
     async getPlayers(state) {
-        return api.getPlayersData().then(results => {
-            console.log("data", results);
+        return await api.getPlayersData().then(results => {
+            console.log("getPlayersData", results);
             state.players = results.map(item => ({
                 id: `${item.name}-${item.team}`,
                 ...item
@@ -19,15 +20,27 @@ const getters = {
         });
     },
     async getTournaments(state) {
-        return api.getTournaments().then((results) => {
-            console.log("data", results);
+        return await api.getTournaments().then((results) => {
+            console.log("getTournaments", results);
             state.tournaments = results;
+            return state.tournaments
         });
     },
     getTeams(state) {
         return state.players.map(item => {
             return item.team;
         });
+    },
+    getCivilizationNames() {
+        return ["Aztecs", "Berbers", "Britons", "Bulgarians", "Burmese", "Byzantines", "Celts", "Chinese", "Cumans", "Ethiopians", "Franks",
+            "Goths", "Huns", "Incas", "Indians", "Italians", "Japanese", "Khmer", "Koreans", "Lithuanians", "Magyars", "Malay", "Malians",
+            "Mayans", "Mongols", "Persians", "Portuguese", "Saracens", "Slavs", "Spanish", "Tatars", "Teutons", "Turks", "Vietnamese", "Vikings"]
+    },
+    getMaps(state) {
+        return state.maps;
+    },
+    getPlayerPositions() {
+        return ["Player 1 - Flank", "Player 2 - Flank", "Player 3 - Pocket", "Player 4 - Pocket", "Player 5 - Pocket", "Player 6 - Pocket", "Player 7 - Flank", "Player 8 - Flank"];
     }
 };
 

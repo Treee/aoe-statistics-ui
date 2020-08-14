@@ -20,7 +20,7 @@
             <v-card-text>
               <v-overflow-btn
                 class="my-2"
-                :items="tournaments"
+                :items="tournamentDropDownOptions"
                 label="Tournaments"
                 editable
                 item-value="text"
@@ -51,6 +51,240 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="phaseDropDownOptions"
+                label="Phase"
+                editable
+                item-value="text"
+                v-model="phaseName"
+                required
+              ></v-overflow-btn>
+              <v-btn
+                class="skinny-height"
+                color="primary"
+                dark
+                @click.stop="newPhaseDialog = true"
+              >Can't Find A Phase? Add It!</v-btn>
+              <v-dialog v-model="newPhaseDialog" max-width="290">
+                <v-card>
+                  <v-card-title class="headline">Add New Phase</v-card-title>
+                  <v-card-text>
+                    <v-text-field
+                      v-model="phaseName"
+                      label="Phase Name"
+                      hint="Phase SemiFinals"
+                      required
+                    ></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="newPhaseDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" text @click="addNewPhase">Agree</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="groupDropDownOptions"
+                label="Group"
+                editable
+                item-value="text"
+                v-model="groupName"
+                required
+              ></v-overflow-btn>
+              <v-btn
+                class="skinny-height"
+                color="primary"
+                dark
+                @click.stop="newGroupDialog = true"
+              >Can't Find A Group? Add It!</v-btn>
+              <v-dialog v-model="newGroupDialog" max-width="290">
+                <v-card>
+                  <v-card-title class="headline">Add New Group</v-card-title>
+                  <v-card-text>
+                    <v-text-field v-model="groupName" label="Group Name" hint="Group A" required></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="newGroupDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" text @click="addNewGroup">Agree</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="matchDropDownOptions"
+                label="Match"
+                editable
+                item-value="text"
+                v-model="matchNumber"
+                required
+              ></v-overflow-btn>
+              <v-btn
+                class="skinny-height"
+                color="primary"
+                dark
+                @click.stop="newGameMatchDialog = true"
+              >Can't Find A Match? Add It!</v-btn>
+              <v-dialog v-model="newGameMatchDialog" max-width="290">
+                <v-card>
+                  <v-card-title class="headline">Add New Match</v-card-title>
+                  <v-card-text>
+                    <v-text-field
+                      v-model="matchNumber"
+                      label="Match Number"
+                      hint="Match 1"
+                      type="number"
+                      required
+                    ></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="newGameMatchDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" text @click="addNewGameMatch">Agree</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="gameDropDownOptions"
+                label="Game"
+                editable
+                item-value="text"
+                v-model="gameNumber"
+                required
+              ></v-overflow-btn>
+              <v-btn
+                class="skinny-height"
+                color="primary"
+                dark
+                @click.stop="newGameDialog = true"
+              >Can't Find A Game? Add It!</v-btn>
+              <v-dialog v-model="newGameDialog" max-width="290">
+                <v-card>
+                  <v-card-title class="headline">Add New Match</v-card-title>
+                  <v-card-text>
+                    <v-text-field
+                      v-model="gameNumber"
+                      label="Game Number"
+                      hint="Match 1"
+                      type="number"
+                      required
+                    ></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="newGameDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" text @click="addNewGame">Agree</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="civilizations"
+                label="Civ Played"
+                editable
+                item-value="text"
+                v-model="civilizationPlayed"
+                required
+              ></v-overflow-btn>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="maps"
+                label="Map Played"
+                editable
+                item-value="text"
+                v-model="mapPlayed"
+                required
+              ></v-overflow-btn>
+
+              <v-btn
+                class="skinny-height"
+                color="primary"
+                dark
+                @click.stop="newMapDialog = true"
+              >Can't Find A Map? Add It!</v-btn>
+              <v-dialog v-model="newMapDialog" max-width="290">
+                <v-card>
+                  <v-card-title class="headline">Add New Map</v-card-title>
+                  <v-card-text>
+                    <v-text-field v-model="mapPlayed" label="Map Played" hint="Arabia" required></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="newMapDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" text @click="addNewMap">Agree</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-overflow-btn
+                class="my-2"
+                :items="winnerDropDown"
+                label="Winner"
+                editable
+                item-value="text"
+                v-model="winner"
+                required
+              ></v-overflow-btn>
+
+              <div>
+                <v-chip
+                  class="player-1"
+                  :class="playerPosition === 'p1' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p1')"
+                >P1 Flank</v-chip>
+                <v-chip
+                  class="player-2"
+                  :class="playerPosition === 'p2' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p2')"
+                >P2 Flank</v-chip>
+                <v-chip
+                  class="player-3"
+                  :class="playerPosition === 'p3' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p3')"
+                >P3 Pocket</v-chip>
+                <v-chip
+                  class="player-4"
+                  :class="playerPosition === 'p4' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p4')"
+                >P4 Pocket</v-chip>
+                <v-chip
+                  class="player-5"
+                  :class="playerPosition === 'p5' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p5')"
+                >P5 Pocket</v-chip>
+                <v-chip
+                  class="player-6"
+                  :class="playerPosition === 'p6' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p6')"
+                >P6 Pocket</v-chip>
+                <v-chip
+                  class="player-7"
+                  :class="playerPosition === 'p7' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p7')"
+                >P7 Flank</v-chip>
+                <v-chip
+                  class="player-8"
+                  :class="playerPosition === 'p8' ? 'active-player' : ''"
+                  :ripple="false"
+                  @click="selectPlayerPosition('p8')"
+                >P8 Flank</v-chip>
+              </div>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -74,35 +308,170 @@ export default {
 
   data: () => ({
     tournaments: [],
+    newMatchDialog: false,
+
+    civilizations: [],
+    civilizationPlayed: "",
+
+    maps: [],
+    mapPlayed: "",
+    newMapDialog: false,
+
+    winnerDropDown: [],
+    winner: "",
+
+    playerPosition: "",
+
+    tournamentDropDown: [],
+    tournamentName: "",
+    newTournamentDialog: false,
+
+    phaseDropDownOptions: [],
+    phaseName: "",
+    newPhaseDialog: false,
+
+    groupDropDownOptions: [],
+    groupName: "",
+    newGroupDialog: false,
+
+    matchDropDownOptions: [],
+    matchNumber: 0,
+    newGameMatchDialog: false,
+
+    gameDropDownOptions: [],
+    gameNumber: 0,
+    newGameDialog: false,
+
     selected: [],
     headers: [{ text: "Name", sortable: true, value: "name" }],
     singleSelect: false,
-    newMatchDialog: false,
-    tournamentName: "",
-    newTournamentDialog: false,
   }),
   computed: {
     mappedTournaments() {
-      return this.tournaments;
+      return this.tournaments.map((item) => ({
+        name: item,
+      }));
+    },
+    tournamentDropDownOptions() {
+      return this.tournamentDropDown;
+    },
+    isActive(playerPosition) {
+      return this.playerPosition === playerPosition;
     },
   },
   created() {
     this.$store.getters["players/getTournaments"].then((result) => {
+      console.log("tournaments result", result);
       this.tournaments = result;
     });
+    this.$store.getters["players/getPlayers"].then((result) => {
+      this.winnerDropDown = result.map((item) => {
+        return item.name;
+      });
+    });
+    this.civilizations = this.$store.getters["players/getCivilizationNames"];
+    this.maps = this.$store.getters["players/getMaps"];
+    this.playerPositions = this.$store.getters["players/getPlayerPositions"];
+    this.tournamentDropDown = this.tournaments.slice();
   },
   methods: {
+    addNewMatch() {
+      console.log("adda  new match to the db");
+      this.newMatchDialog = false;
+    },
     addNewTournament() {
       console.log("clicked", this.tournamentName);
       if (!this.tournaments.includes(this.tournamentName)) {
-        this.tournaments.push(this.tournamentName);
+        this.tournamentDropDown.push(this.tournamentName);
       }
       this.newTournamentDialog = false;
     },
-    addNewMatch() {},
+    addNewPhase() {
+      console.log("clicked", this.phaseName);
+      if (!this.phaseDropDownOptions.includes(this.phaseName)) {
+        this.phaseDropDownOptions.push(this.phaseName);
+      }
+      this.newPhaseDialog = false;
+    },
+    addNewGroup() {
+      console.log("clicked", this.groupName);
+      if (!this.groupDropDownOptions.includes(this.groupName)) {
+        this.groupDropDownOptions.push(this.groupName);
+      }
+      this.newGroupDialog = false;
+    },
+    addNewGameMatch() {
+      console.log("clicked", this.matchNumber);
+      if (!this.matchDropDownOptions.includes(this.matchNumber)) {
+        this.matchDropDownOptions.push(this.matchNumber);
+      }
+      this.newGameMatchDialog = false;
+    },
+    addNewGame() {
+      console.log("clicked", this.gameNumber);
+      if (!this.gameDropDownOptions.includes(this.gameNumber)) {
+        this.gameDropDownOptions.push(this.gameNumber);
+      }
+      this.newGameDialog = false;
+    },
+    addNewMap() {
+      console.log("clicked", this.mapPlayed);
+      if (!this.maps.includes(this.mapPlayed)) {
+        this.maps.push(this.mapPlayed);
+      }
+      this.newMapDialog = false;
+    },
+    selectPlayerPosition(position) {
+      this.playerPosition = position;
+      console.log(position);
+    },
   },
 };
 </script>
 
 <style lang="scss">
+.active-player {
+  background-color: darkgray !important;
+}
+
+.player-1 {
+  font-weight: bold;
+  color: blue !important;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+.player-2 {
+  font-weight: bold;
+  color: red !important;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+.player-3 {
+  font-weight: bold;
+  color: green !important;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+.player-4 {
+  font-weight: bold;
+  color: yellow !important;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.player-5 {
+  font-weight: bold;
+  color: cyan !important;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.player-6 {
+  font-weight: bold;
+  color: purple !important;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+.player-7 {
+  font-weight: bold;
+  color: gray !important;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+.player-8 {
+  font-weight: bold;
+  color: orange !important;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
 </style>

@@ -9,10 +9,10 @@ export default class Api {
 
     async getPlayersData() {
         return await fetch(`${this.hostname}/${this.playerRoute}/all`).then(response => {
-            console.log('response', response);
+            console.log('getPlayersData response', response);
             return response.json();
         }).then(data => {
-            console.log('data', data);
+            console.log('getPlayersData data', data);
             return data;
         });
     }
@@ -26,10 +26,10 @@ export default class Api {
             body: JSON.stringify({ playerId })
         }
         return await fetch(`${this.hostname}/${this.playerRoute}/${playerId}`, options).then(response => {
-            console.log('response', response);
+            console.log('deletePlayer response', response);
             return response.json()
         }, this.errorHandler).then(data => {
-            console.log('data', data);
+            console.log('deletePlayer data', data);
             return data;
         }, this.errorHandler);
     }
@@ -43,20 +43,20 @@ export default class Api {
             body: JSON.stringify({ name, team })
         }
         return await fetch(`${this.hostname}/${this.playerRoute}/new`, options).then(response => {
-            console.log('response', response);
+            console.log('addNewPlayer response', response);
             return response.json()
         }).then(newPlayer => {
-            console.log('newPlayer', newPlayer);
+            console.log('addNewPlayer newPlayer', newPlayer);
             return newPlayer;
         });
     }
 
     async getTournaments() {
         return await fetch(`${this.hostname}/${this.tournamentRoute}/all`).then(response => {
-            console.log('response', response);
+            console.log('getTournaments api response', response);
             return response.json()
         }).then(data => {
-            console.log('data', data);
+            console.log('getTournaments api data', data);
             return data;
         });
     }
