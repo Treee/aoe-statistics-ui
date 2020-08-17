@@ -236,54 +236,58 @@
               ></v-overflow-btn>
 
               <div>
-                <v-chip
-                  class="player-1"
-                  :class="playerPosition === 'p1' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p1')"
-                >P1 Flank</v-chip>
-                <v-chip
-                  class="player-2"
-                  :class="playerPosition === 'p2' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p2')"
-                >P2 Flank</v-chip>
-                <v-chip
-                  class="player-3"
-                  :class="playerPosition === 'p3' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p3')"
-                >P3 Pocket</v-chip>
-                <v-chip
-                  class="player-4"
-                  :class="playerPosition === 'p4' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p4')"
-                >P4 Pocket</v-chip>
-                <v-chip
-                  class="player-5"
-                  :class="playerPosition === 'p5' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p5')"
-                >P5 Pocket</v-chip>
-                <v-chip
-                  class="player-6"
-                  :class="playerPosition === 'p6' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p6')"
-                >P6 Pocket</v-chip>
-                <v-chip
-                  class="player-7"
-                  :class="playerPosition === 'p7' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p7')"
-                >P7 Flank</v-chip>
-                <v-chip
-                  class="player-8"
-                  :class="playerPosition === 'p8' ? 'active-player' : ''"
-                  :ripple="false"
-                  @click="selectPlayerPosition('p8')"
-                >P8 Flank</v-chip>
+                <div>
+                  <v-chip
+                    class="player-1"
+                    :class="playerPosition === 'p1' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p1')"
+                  >P1 Flank</v-chip>
+                  <v-chip
+                    class="player-3"
+                    :class="playerPosition === 'p3' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p3')"
+                  >P3 Pocket</v-chip>
+                  <v-chip
+                    class="player-5"
+                    :class="playerPosition === 'p5' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p5')"
+                  >P5 Pocket</v-chip>
+                  <v-chip
+                    class="player-7"
+                    :class="playerPosition === 'p7' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p7')"
+                  >P7 Flank</v-chip>
+                </div>
+                <div class="mt-1">
+                  <v-chip
+                    class="player-2"
+                    :class="playerPosition === 'p2' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p2')"
+                  >P2 Flank</v-chip>
+                  <v-chip
+                    class="player-4"
+                    :class="playerPosition === 'p4' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p4')"
+                  >P4 Pocket</v-chip>
+                  <v-chip
+                    class="player-6"
+                    :class="playerPosition === 'p6' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p6')"
+                  >P6 Pocket</v-chip>
+                  <v-chip
+                    class="player-8"
+                    :class="playerPosition === 'p8' ? 'active-player' : ''"
+                    :ripple="false"
+                    @click="selectPlayerPosition('p8')"
+                  >P8 Flank</v-chip>
+                </div>
               </div>
             </v-card-text>
             <v-card-actions>
