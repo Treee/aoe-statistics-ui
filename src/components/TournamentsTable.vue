@@ -19,9 +19,8 @@
             <v-card-title class="headline">Add New Match</v-card-title>
             <v-card-text>
               <v-overflow-btn
-                class="my-2"
                 :items="tournamentDropDownOptions"
-                label="Tournaments"
+                label="Tournaments (required)"
                 editable
                 item-value="text"
                 v-model="tournamentName"
@@ -53,9 +52,8 @@
               </v-dialog>
 
               <v-overflow-btn
-                class="my-2"
                 :items="phaseDropDownOptions"
-                label="Phase"
+                label="Phase (required)"
                 editable
                 item-value="text"
                 v-model="phaseName"
@@ -87,7 +85,6 @@
               </v-dialog>
 
               <v-overflow-btn
-                class="my-2"
                 :items="groupDropDownOptions"
                 label="Group"
                 editable
@@ -116,9 +113,8 @@
               </v-dialog>
 
               <v-overflow-btn
-                class="my-2"
                 :items="matchDropDownOptions"
-                label="Match"
+                label="Match (required)"
                 editable
                 item-value="text"
                 v-model="matchNumber"
@@ -151,9 +147,8 @@
               </v-dialog>
 
               <v-overflow-btn
-                class="my-2"
                 :items="gameDropDownOptions"
-                label="Game"
+                label="Game (required)"
                 editable
                 item-value="text"
                 v-model="gameNumber"
@@ -186,7 +181,6 @@
               </v-dialog>
 
               <v-overflow-btn
-                class="my-2"
                 :items="civilizations"
                 label="Civ Played"
                 editable
@@ -196,7 +190,6 @@
               ></v-overflow-btn>
 
               <v-overflow-btn
-                class="my-2"
                 :items="maps"
                 label="Map Played"
                 editable
@@ -226,7 +219,6 @@
               </v-dialog>
 
               <v-overflow-btn
-                class="my-2"
                 :items="winnerDropDown"
                 label="Winner"
                 editable
@@ -380,53 +372,75 @@ export default {
   },
   methods: {
     addNewMatch() {
-      console.log("adda  new match to the db");
+      const data = {
+        tournament: this.tournamentName,
+        phase: this.phaseName,
+        group: this.groupName,
+        match: this.matchNumber,
+        game: this.gameNumber,
+        mapPlayed: this.mapPlayed,
+        civPlayed: this.civilizationPlayed,
+        winner: this.winner,
+        position: this.playerPosition,
+      };
+
+      if (
+        data.tournament !== undefined &&
+        data.phase !== undefined &&
+        data.match !== undefined &&
+        data.game !== undefined
+      )
+        console.log("addNewMatch click4", data);
       this.newMatchDialog = false;
     },
     addNewTournament() {
-      console.log("clicked", this.tournamentName);
+      console.log("addNewTournament clicked", this.tournamentName);
       if (!this.tournaments.includes(this.tournamentName)) {
         this.tournamentDropDown.push(this.tournamentName);
       }
       this.newTournamentDialog = false;
     },
     addNewPhase() {
-      console.log("clicked", this.phaseName);
+      console.log("addNewPhase clicked", this.phaseName);
       if (!this.phaseDropDownOptions.includes(this.phaseName)) {
         this.phaseDropDownOptions.push(this.phaseName);
       }
       this.newPhaseDialog = false;
     },
     addNewGroup() {
-      console.log("clicked", this.groupName);
+      console.log("addNewGroup clicked", this.groupName);
       if (!this.groupDropDownOptions.includes(this.groupName)) {
         this.groupDropDownOptions.push(this.groupName);
       }
       this.newGroupDialog = false;
     },
     addNewGameMatch() {
-      console.log("clicked", this.matchNumber);
+      console.log("addNewGameMatch clicked", this.matchNumber);
       if (!this.matchDropDownOptions.includes(this.matchNumber)) {
         this.matchDropDownOptions.push(this.matchNumber);
       }
       this.newGameMatchDialog = false;
     },
     addNewGame() {
-      console.log("clicked", this.gameNumber);
+      console.log("addNewGame clicked", this.gameNumber);
       if (!this.gameDropDownOptions.includes(this.gameNumber)) {
         this.gameDropDownOptions.push(this.gameNumber);
       }
       this.newGameDialog = false;
     },
     addNewMap() {
-      console.log("clicked", this.mapPlayed);
+      console.log("addNewMap clicked", this.mapPlayed);
       if (!this.maps.includes(this.mapPlayed)) {
         this.maps.push(this.mapPlayed);
       }
       this.newMapDialog = false;
     },
     selectPlayerPosition(position) {
-      this.playerPosition = position;
+      if (this.playerPosition === position) {
+        this.playerPosition = "";
+      } else {
+        this.playerPosition = position;
+      }
       console.log(position);
     },
   },
