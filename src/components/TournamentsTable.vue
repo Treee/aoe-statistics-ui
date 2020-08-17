@@ -356,7 +356,7 @@ export default {
     },
   },
   created() {
-    this.$store.getters["players/getTournaments"].then((result) => {
+    this.$store.getters["tournaments/getTournaments"].then((result) => {
       console.log("tournaments result", result);
       this.tournaments = result;
     });
@@ -365,9 +365,9 @@ export default {
         return item.name;
       });
     });
-    this.civilizations = this.$store.getters["players/getCivilizationNames"];
-    this.maps = this.$store.getters["players/getMaps"];
-    this.playerPositions = this.$store.getters["players/getPlayerPositions"];
+    this.civilizations = this.$store.getters["commonData/getCivilizationNames"];
+    this.maps = this.$store.getters["commonData/getMaps"];
+    this.playerPositions = this.$store.getters["commonData/getPlayerPositions"];
     this.tournamentDropDown = this.tournaments.slice();
   },
   methods: {

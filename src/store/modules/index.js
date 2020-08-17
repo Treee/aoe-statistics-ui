@@ -1,5 +1,9 @@
 import players from "./players";
+import commonData from "./common-data";
+import tournaments from "./tournaments";
 
 export default {
-    players
+    commonData,
+    players,
+    tournaments
 }
