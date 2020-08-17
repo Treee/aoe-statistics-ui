@@ -88,6 +88,39 @@
                 </v-dialog>
 
                 <v-overflow-btn
+                  :items="stageDropDownOptions"
+                  label="Stage"
+                  editable
+                  item-value="text"
+                  v-model="stageName"
+                  required
+                ></v-overflow-btn>
+                <v-btn
+                  class="skinny-height"
+                  color="primary"
+                  dark
+                  @click.stop="newStageDialog = true"
+                >Can't Find A Stage? Add It!</v-btn>
+                <v-dialog v-model="newStageDialog" max-width="290">
+                  <v-card>
+                    <v-card-title class="headline">Add New Stage</v-card-title>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="stageName"
+                        label="Stage Name"
+                        hint="Main Stage"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="red darken-1" text @click="newStageDialog = false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="addNewStage">Agree</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+                <v-overflow-btn
                   :items="groupDropDownOptions"
                   label="Group"
                   editable
@@ -115,75 +148,9 @@
                   </v-card>
                 </v-dialog>
 
-                <v-overflow-btn
-                  :items="matchDropDownOptions"
-                  label="Match (required)"
-                  editable
-                  item-value="text"
-                  v-model="matchNumber"
-                  :rules="matchDropDownOptionsRules"
-                  required
-                ></v-overflow-btn>
-                <v-btn
-                  class="skinny-height"
-                  color="primary"
-                  dark
-                  @click.stop="newGameMatchDialog = true"
-                >Can't Find A Match? Add It!</v-btn>
-                <v-dialog v-model="newGameMatchDialog" max-width="290">
-                  <v-card>
-                    <v-card-title class="headline">Add New Match</v-card-title>
-                    <v-card-text>
-                      <v-text-field
-                        v-model="matchNumber"
-                        label="Match Number"
-                        hint="Match 1"
-                        type="number"
-                        required
-                      ></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="red darken-1" text @click="newGameMatchDialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="addNewGameMatch">Agree</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                <v-text-field v-model="matchNumber" label="Match Number" type="number" required></v-text-field>
 
-                <v-overflow-btn
-                  :items="gameDropDownOptions"
-                  label="Game (required)"
-                  editable
-                  item-value="text"
-                  v-model="gameNumber"
-                  :rules="gameDropDownOptionsRules"
-                  required
-                ></v-overflow-btn>
-                <v-btn
-                  class="skinny-height"
-                  color="primary"
-                  dark
-                  @click.stop="newGameDialog = true"
-                >Can't Find A Game? Add It!</v-btn>
-                <v-dialog v-model="newGameDialog" max-width="290">
-                  <v-card>
-                    <v-card-title class="headline">Add New Match</v-card-title>
-                    <v-card-text>
-                      <v-text-field
-                        v-model="gameNumber"
-                        label="Game Number"
-                        hint="Match 1"
-                        type="number"
-                        required
-                      ></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="red darken-1" text @click="newGameDialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="addNewGame">Agree</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                <v-text-field v-model="gameNumber" label="Game Number" type="number" required></v-text-field>
 
                 <v-overflow-btn
                   :items="civilizations"
@@ -298,7 +265,14 @@
       </v-row>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length">More info about {{ item.name }}</td>
+      <td :colspan="headers.length">
+        <v-data-table
+          :headers="innerHeaders"
+          :items="getMatchesForTournament(item._id)"
+          :single-select="singleSelect"
+          :hide-default-footer="true"
+        ></v-data-table>
+      </td>
     </template>
   </v-data-table>
 </template>
@@ -310,8 +284,24 @@ export default {
 
   data: () => ({
     tournaments: [],
+    matches: [],
     newMatchDialog: false,
     isNewMatchValid: false,
+    selected: [],
+    innerSelected: [],
+    headers: [{ text: "Name", sortable: true, value: "_id" }],
+    innerHeaders: [
+      { text: "Phase", sortable: true, value: "phase" },
+      { text: "Stage", sortable: true, value: "stage" },
+      { text: "Group", sortable: true, value: "group" },
+      { text: "Match", sortable: true, value: "match" },
+      { text: "Game", sortable: true, value: "game" },
+      { text: "Civs", sortable: true, value: "civPlayed" },
+      { text: "Map", sortable: true, value: "mapPlayed" },
+      { text: "Winner", sortable: true, value: "winner" },
+      { text: "Position", sortable: true, value: "position" },
+    ],
+    singleSelect: false,
 
     civilizations: [],
     civilizationPlayed: "",
@@ -325,7 +315,7 @@ export default {
 
     playerPosition: "",
 
-    tournamentDropDown: [],
+    tournamentDropDownOptions: [],
     tournamentName: "",
     newTournamentDialog: false,
     tournamentDropDownRules: [(v) => !!v || "Tournament is required."],
@@ -335,23 +325,16 @@ export default {
     newPhaseDialog: false,
     phaseDropDownOptionsRules: [(v) => !!v || "Phase is required."],
 
+    stageDropDownOptions: [],
+    stageName: "",
+    newStageDialog: false,
+
     groupDropDownOptions: [],
     groupName: "",
     newGroupDialog: false,
 
-    matchDropDownOptions: [],
     matchNumber: 0,
-    newGameMatchDialog: false,
-    matchDropDownOptionsRules: [(v) => !!v || "Match is required."],
-
-    gameDropDownOptions: [],
     gameNumber: 0,
-    newGameDialog: false,
-    gameDropDownOptionsRules: [(v) => !!v || "Game is required."],
-
-    selected: [],
-    headers: [{ text: "Name", sortable: true, value: "name" }],
-    singleSelect: false,
   }),
   computed: {
     mappedTournaments() {
@@ -359,17 +342,29 @@ export default {
         name: item,
       }));
     },
-    tournamentDropDownOptions() {
-      return this.tournamentDropDown;
-    },
     isActive(playerPosition) {
       return this.playerPosition === playerPosition;
     },
   },
   created() {
     this.$store.getters["tournaments/getTournaments"].then((result) => {
-      console.log("tournaments result", result);
       this.tournaments = result;
+      this.tournamentDropDownOptions = this.tournaments.slice().map((obj) => {
+        return obj._id;
+      });
+    });
+    this.$store.getters["tournaments/getAllMatches"].then((result) => {
+      console.log("getAllMatches result", result);
+      this.matches = result;
+      this.phaseDropDownOptions = this.matches.slice().map((obj) => {
+        return obj.phase;
+      });
+      this.stageDropDownOptions = this.matches.slice().map((obj) => {
+        return obj.stage;
+      });
+      this.groupDropDownOptions = this.matches.slice().map((obj) => {
+        return obj.group;
+      });
     });
     this.$store.getters["players/getPlayers"].then((result) => {
       this.winnerDropDown = result.map((item) => {
@@ -379,31 +374,34 @@ export default {
     this.civilizations = this.$store.getters["commonData/getCivilizationNames"];
     this.maps = this.$store.getters["commonData/getMaps"];
     this.playerPositions = this.$store.getters["commonData/getPlayerPositions"];
-    this.tournamentDropDown = this.tournaments.slice();
   },
   methods: {
     addNewMatch() {
-      const data = {
-        tournament: this.tournamentName,
-        phase: this.phaseName,
-        group: this.groupName,
-        match: this.matchNumber,
-        game: this.gameNumber,
-        mapPlayed: this.mapPlayed,
-        civPlayed: this.civilizationPlayed,
-        winner: this.winner,
-        position: this.playerPosition,
-      };
       this.$refs.newMatchForm.validate();
       if (this.isNewMatchValid) {
-        console.log("addNewMatch click4", data);
+        this.$store
+          .dispatch("tournaments/addNewMatch", {
+            tournament: this.tournamentName,
+            phase: this.phaseName,
+            stage: this.stageName,
+            group: this.groupName,
+            match: this.matchNumber,
+            game: this.gameNumber,
+            mapPlayed: this.mapPlayed,
+            civPlayed: this.civilizationPlayed,
+            winner: this.winner,
+            position: this.playerPosition,
+          })
+          .then((results) => {
+            this.tournaments = results;
+          });
         this.newMatchDialog = false;
       }
     },
     addNewTournament() {
       console.log("addNewTournament clicked", this.tournamentName);
       if (!this.tournaments.includes(this.tournamentName)) {
-        this.tournamentDropDown.push(this.tournamentName);
+        this.tournamentDropDownOptions.push(this.tournamentName);
       }
       this.newTournamentDialog = false;
     },
@@ -411,6 +409,13 @@ export default {
       console.log("addNewPhase clicked", this.phaseName);
       if (!this.phaseDropDownOptions.includes(this.phaseName)) {
         this.phaseDropDownOptions.push(this.phaseName);
+      }
+      this.newPhaseDialog = false;
+    },
+    addNewStage() {
+      console.log("addNewStage clicked", this.stageName);
+      if (!this.stageDropDownOptions.includes(this.stageName)) {
+        this.stageDropDownOptions.push(this.stageName);
       }
       this.newPhaseDialog = false;
     },
@@ -449,6 +454,11 @@ export default {
         this.playerPosition = position;
       }
       console.log(position);
+    },
+    getMatchesForTournament(tournamentName) {
+      return this.matches.filter((match) => {
+        return match.tournamentName === tournamentName;
+      });
     },
   },
 };
